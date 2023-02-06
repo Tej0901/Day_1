@@ -2,30 +2,53 @@ package practice_course;
 
 import java.util.*;
 
-class browser
+interface MultipleAccountContainers
+{
+	void addContainer();
+	void leaveContainer();
+}
+
+class browsers
 {  
 	boolean isLocationAccessible=false;
 	boolean isCameraAccessible=false;
 	boolean isMicroponeAccessible=false;
-	final String versionNumber="1.0";
+	final String googleChromeVersionNumber="1.0";
+	public static int GoogleChromeNoOfInstances=0;
+	public static int FireFoxNoOfInstances=0;
+	String browserName;
 	
-	public browser() 
+	public browsers() 
 	{    
-		System.out.println("inside browser");
+		System.out.println("browser function");
 	}
 	
 	void whoAmI()
 	{
 		System.out.println("I am browser");
 	}
+	
+	void setOrResetPermissions(boolean Location)
+	{
+		isLocationAccessible=Location;
+	}
+	
+	void setOrResetPermissions(boolean Location,boolean Camera,boolean Microphone)
+	{
+		isLocationAccessible=Location;
+		isCameraAccessible=Camera;
+		isMicroponeAccessible=Microphone;
+	}
+	
 }
 
-class GoogleChrome extends browser
+class GoogleChrome extends browsers
 {
 	public GoogleChrome() 
-	{   super();
-		System.out.println("inside GoogleChrome");
-		
+	{  
+		super();
+		GoogleChromeNoOfInstances++;
+		browserName="GoogleChrome";
 	}
 	
 	void whoAmI()
@@ -33,30 +56,52 @@ class GoogleChrome extends browser
 		System.out.println("I am GoogleChrome");
 	}
 }
-class FireFox extends browser
+
+class FireFox extends browsers
 {
 	public FireFox() 
 	{
 		super();
-		System.out.println("FireFox constructor");
+		FireFoxNoOfInstances++;
+		browserName="FireFox";
 	}
+	
 	void whoAmI()
 	{
 		System.out.println("I am FireFox");
 	}
 }
 
+
 public class exercise_2 {
 	public static void main(String[] args)
 	{
-		browser tabOneBrowser=new GoogleChrome();
-		browser tabtwoBrowser=new FireFox();
-		browser tabThree= new FireFox();
-		browser tabFour= new GoogleChrome();
-		browser tabFive= new GoogleChrome();
-		browser[] allBrowsers = new browser[5];
-		
-		
+		int GoogleChromeInstances=0;
+		int FireFoxInstances=0;
+		browsers tabOne=new GoogleChrome();
+		browsers tabTwo=new FireFox();
+		browsers tabThree= new FireFox();
+		browsers tabFour= new GoogleChrome();
+		browsers tabFive= new GoogleChrome();
+		browsers[] allBrowsers = new browsers[5];
+		allBrowsers[0]=tabOne;
+		allBrowsers[1]=tabTwo;
+		allBrowsers[2]=tabThree;
+		allBrowsers[3]=tabFour;
+		allBrowsers[4]=tabFive;
+		for(int i=0;i<allBrowsers.length;i++)
+		{
+			if((allBrowsers[i].browserName).equalsIgnoreCase("GoogleChrome"))
+			{
+				GoogleChromeInstances++;
+			}
+			else if((allBrowsers[i].browserName).equalsIgnoreCase("FireFox"))
+			{
+				FireFoxInstances++;
+			}
+		}
+		System.out.println(GoogleChromeInstances);
+		System.out.println(FireFoxInstances);
 	}
 
 }
