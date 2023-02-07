@@ -4,12 +4,16 @@ import java.util.*;
 
 interface MultipleAccountContainers
 {
-	void addContainer();
-	void leaveContainer();
+	void addContainer(String containerName);
+	void leaveContainer(String containeerName);
+	String[] viewAllContainers();
 }
 
-class browsers
+class browsers implements MultipleAccountContainers
 {  
+	public int MaxContainerSize=10;
+	String[] containers=new String[MaxContainerSize];
+	public int containerArrayIndex=0;
 	boolean isLocationAccessible=false;
 	boolean isCameraAccessible=false;
 	boolean isMicroponeAccessible=false;
@@ -40,7 +44,30 @@ class browsers
 		isMicroponeAccessible=Microphone;
 	}
 	
+	public void addContainer(String containerName) 
+	{
+		this.containers[this.containerArrayIndex]=containerName;
+		this.containerArrayIndex++;
+	}
+
+	public void leaveContainer(String containerName) 
+	{
+		for(int i=0;i<containerArrayIndex;i++)
+		{
+			if(this.containers[i].equalsIgnoreCase(containerName))
+					{
+						this.containers[i]=null;
+					}
+		}
+	}
+	
+	public String[] viewAllContainers()
+	{
+		return containers;
+	}
+	
 }
+
 
 class GoogleChrome extends browsers
 {
@@ -57,7 +84,8 @@ class GoogleChrome extends browsers
 	}
 }
 
-class FireFox extends browsers
+
+class FireFox extends browsers implements MultipleAccountContainers
 {
 	public FireFox() 
 	{
@@ -73,7 +101,9 @@ class FireFox extends browsers
 }
 
 
-public class exercise_2 {
+
+public class exercise_2 
+{
 	public static void main(String[] args)
 	{
 		int GoogleChromeInstances=0;
@@ -89,6 +119,7 @@ public class exercise_2 {
 		allBrowsers[2]=tabThree;
 		allBrowsers[3]=tabFour;
 		allBrowsers[4]=tabFive;
+		
 		for(int i=0;i<allBrowsers.length;i++)
 		{
 			if((allBrowsers[i].browserName).equalsIgnoreCase("GoogleChrome"))
@@ -102,6 +133,22 @@ public class exercise_2 {
 		}
 		System.out.println(GoogleChromeInstances);
 		System.out.println(FireFoxInstances);
+		
+		tabTwo.addContainer("facebookContainer"); 
+		tabTwo.addContainer("Mails"); 
+		tabTwo.addContainer("PrivateBrowsing");     
+		String[] containers=tabTwo.viewAllContainers(); //List 3 container names 
+		for(int i=0;containers[i]!=null;i++)
+		{
+			System.out.print(containers[i]+" ");
+		}
+		tabTwo.leaveContainer("PrivateBrowsing"); //delete given container
+		containers=tabTwo.viewAllContainers(); 
+		System.out.println();
+		for(int i=0;containers[i]!=null;i++)
+		{
+			System.out.print(containers[i]+" ");
+		}//List 2 container names 
+		
 	}
-
 }
