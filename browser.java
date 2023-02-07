@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 class browser
 {
-	final int urlArraySize=10;
+	final int urlArraySize=20;
 	private String[] visitedURLs = new String[urlArraySize];
-	int visitedURLsIndex=0;
+	int visitedURLsIndex=-1;
 	
 	public browser() {
 		//does nothing
@@ -20,7 +20,6 @@ class browser
 	{
 		if(this.visitedURLsIndex>=urlArraySize)
 		{
-			System.out.println("exception occurred!!!!");
 			System.exit(0);
 		}
 		this.visitedURLs=url;
@@ -29,9 +28,19 @@ class browser
 	
 	public void addVisitedURLs(String url)
 	{
-		this.visitedURLs[this.visitedURLsIndex]=url;
+		this.visitedURLs= reSize(visitedURLs,visitedURLsIndex,url);
 		this.visitedURLsIndex++;
-		
+	}
+	
+	public String[] reSize(String[] urls, int length, String url)
+	{
+		String[] Arr=new String[length+1];
+		for(int i=0;i<length;i++)
+		{
+			Arr[i]=urls[i];
+		}
+		Arr[length]=url;
+		return Arr;
 	}
 	
 	public void getVisitedURLs()
