@@ -1,36 +1,70 @@
 package practice_course;
-import java.util.*;
+import java.util.Scanner;
 
 class browser
 {
-	private static String[] urls=new String[100];
-	static int index=0;
+	final int urlArraySize=10;
+	private String[] visitedURLs = new String[urlArraySize];
+	int visitedURLsIndex=0;
+	
 	public browser() {
-		// TODO Auto-generated constructor stub
+		//does nothing
 	}
 	
-	browser(String input)
+	public browser(String[] url)
 	{
-		urls[index]=input;
-		index++;
+		this.setVisitedURLs(url);
 	}
 	
-	public static void printUrl()
+	public void setVisitedURLs(String[] url)
 	{
-		for(int i=0;urls[i]!=null;i++) {
-		System.out.println(urls[i]);
+		if(this.visitedURLsIndex>=urlArraySize)
+		{
+			System.out.println("exception occurred!!!!");
+			System.exit(0);
+		}
+		this.visitedURLs=url;
+		this.visitedURLsIndex=this.visitedURLs.length;
 	}
+	
+	public void addVisitedURLs(String url)
+	{
+		this.visitedURLs[this.visitedURLsIndex]=url;
+		this.visitedURLsIndex++;
+		
 	}
+	
+	public void getVisitedURLs()
+	{
+		for(int i=0;i<this.visitedURLsIndex;i++)
+		{
+			System.out.println(this.visitedURLs[i]);
+			
+		}
+		System.out.println("\n");
+	}
+	
 	
 	public static void main(String[] args)
 	{
-		System.out.println("Enter the urls: ");
-		Scanner scanner = new Scanner(System.in);
-		browser[] chromeBrowsers=new browser[10];
-		for(int i=0;i<5;i++) {
-		chromeBrowsers[i]=new browser(scanner.nextLine());
-		}
-		printUrl();
+		String[] sampleInputUrls1 = {"www.pec.edu","www.javatpoint.com","www.GFG.com"};
+		browser googleChrome = new browser(sampleInputUrls1);
+		String[] sampleInputUrls2 =  {"www.google.com","www.youtube.com"};
+		browser fireFox = new browser(sampleInputUrls2);
+		
+//		Scanner inputUrl=new Scanner(System.in);
+//		String url3=inputUrl.nextLine();
+//		String url4=inputUrl.nextLine();
+		googleChrome.addVisitedURLs("www.zoho.com");
+		fireFox.addVisitedURLs("www.gmail.com");
+		googleChrome.addVisitedURLs("www.git.com");
+		fireFox.addVisitedURLs("www.busindia.com");
+		
+		System.out.println("Print history of GoogleChrome Browser:");
+		googleChrome.getVisitedURLs();
+		
+		System.out.println("Print history of FireFox Browser: ");
+		fireFox.getVisitedURLs();
 	}
 }
  
