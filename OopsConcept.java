@@ -11,17 +11,21 @@ class Browser
 {
 	String browserName;
 	
-	final static int visitedURLsSize=20;
-	private String[] visitedURLs = new String[visitedURLsSize];
+	static final int visitedURLsSize=20;
+	private String[] visitedURLs = new String[visitedURLsSize];           //Browser Specific
 	int visitedURLsIndex=0;
+	
+	static final int allURsArraySize=40;
+	private static String[] allURLsArray = new String[allURsArraySize];   //It stores All the URLs from All Browsers, Not Browser Specific
+	static int allURlsIndex=0;
 
 	public Browser() {
-		System.out.println("browser function");
+		System.out.println("Inside browser Constructor");
 	}
-	//parameterized constructor
+	
 	public Browser(String[] url)
 	{
-		if(this.visitedURLsIndex>=visitedURLsSize)
+		if(this.visitedURLsIndex>=visitedURLsSize &&  allURlsIndex>=allURsArraySize)
 		{
 			//exception occurs!!!!
 			System.exit(0);
@@ -29,31 +33,12 @@ class Browser
 		this.setVisitedURLs(url);
 	}
 	
-	
-	//set UL method
+	//set URL method
 	public void setVisitedURLs(String[] url)
 	{
 		this.visitedURLs=url;
 		this.visitedURLsIndex=this.visitedURLs.length;
-	}
-	
-	//add URl method
-	public void addVisitedURLs(String url)
-	{
-		this.visitedURLs= addURL(visitedURLs,visitedURLsIndex,url);
-		this.visitedURLsIndex++;
-	}
-	
-	//resize
-	public String[] addURL(String[] visitedURLs, int visitedURLsIndex, String url)
-	{
-		String[] updatedURLs=new String[visitedURLsIndex+1];
-		for(int i=0;i<visitedURLsIndex;i++)
-		{
-			updatedURLs[i]=visitedURLs[i];
-		}
-		updatedURLs[visitedURLsIndex]=url;
-		return updatedURLs;
+		this.setAllURLs(url);
 	}
 	
 	//Get URL method
@@ -66,12 +51,63 @@ class Browser
 		System.out.println("\n");
 	}
 	
+	//Set All URLs method
+	public void setAllURLs(String[] url) 
+	{
+		for(String link : url) 
+		{
+			allURLsArray[allURlsIndex] = link;
+			allURlsIndex++;
+		}
+	}
+	
+	//Get All URLs method
+	public void getAllURLs()
+	{
+		for(int i=allURlsIndex-1;i>=0;i--)
+		{
+			System.out.println(allURLsArray[i]);
+		}
+		System.out.println("\n");
+	}
+	
+	//add URl method
+	public void addVisitedURLs(String url)
+	{
+		if(this.visitedURLsIndex>=visitedURLsSize &&  allURlsIndex>=allURsArraySize)
+		{
+			//exception occurs!!!!
+			System.exit(0);
+		}
+//		this.visitedURLs[this.visitedURLsIndex]=url;
+		this.visitedURLs= addURL(visitedURLs,visitedURLsIndex,url);
+		this.visitedURLsIndex++;
+		allURLsArray[allURlsIndex]=url;
+		allURlsIndex++;
+	}
+	
+	//resizing Array method
+	public String[] addURL(String[] visitedURLs, int visitedURLsIndex, String url)
+	{
+		String[] updatedURLs=new String[visitedURLsIndex+1];
+		for(int i=0;i<visitedURLsIndex;i++)
+		{
+			updatedURLs[i]=visitedURLs[i];
+		}
+		updatedURLs[visitedURLsIndex]=url;
+		return updatedURLs;
+	}
+
+	
 	void whoAmI()
 	{
 		System.out.println("I am browser");
 	}
 }
 
+
+
+//GoogleChrome Class
 class GoogleChrome extends Browser
 {
 	private final String versionNumber = "1.0";
@@ -79,6 +115,7 @@ class GoogleChrome extends Browser
 	
 	public GoogleChrome() {
 		super();
+		//System.out.println("Inside GoogleChrome Constructor");
 		browserName="GoogleChrome";
 	}
 	
@@ -91,6 +128,7 @@ class GoogleChrome extends Browser
 		this.isCameraAccessible = isCameraAccessible;
 		this.isMicrophoneAccessible = isMicrophoneAccessible;
 	}
+	
 	public void setPermissions(boolean set) {
 		this.isLocationAccessible = set;
 		this.isCameraAccessible = set;
@@ -99,6 +137,8 @@ class GoogleChrome extends Browser
 }
 
 
+
+//FireFox Class
 class FireFox extends Browser implements MultipleAccountContainers
 {
 	private int MaxContainerSize=10;
@@ -108,6 +148,7 @@ class FireFox extends Browser implements MultipleAccountContainers
 	public FireFox() 
 	{
 		super();
+		//System.out.println("Inside FireFox Constructor");
 		browserName="FireFox";
 	}
 	
@@ -140,6 +181,8 @@ class FireFox extends Browser implements MultipleAccountContainers
 	
 }
 
+
+
 public class OopsConcept
 {
 	//main method
@@ -150,26 +193,38 @@ public class OopsConcept
 		Browser googleChrome = new Browser(sampleInputUrls1);
 		String[] sampleInputUrls2 =  {"www.google.com","www.youtube.com"};
 		Browser fireFox = new Browser(sampleInputUrls2);
+		
 		googleChrome.addVisitedURLs("www.zoho.com");
 		fireFox.addVisitedURLs("www.gmail.com");
 		googleChrome.addVisitedURLs("www.git.com");
 		fireFox.addVisitedURLs("www.busindia.com");
+		
 		System.out.println("Print history of GoogleChrome Browser:");
 		googleChrome.getVisitedURLs();
 		System.out.println("-----------------------------");
+		
 		System.out.println("Print history of FireFox Browser: ");
 		fireFox.getVisitedURLs();
 		System.out.println("-----------------------------");
+		
+		System.out.println("Print All URLs Visited: ");
+		googleChrome.getAllURLs();
+		System.out.println("-----------------------------");
+		
 		//exercise-2
 		int GoogleChromeInstances=0;
 		int FireFoxInstances=0;
-		Browser tabOne=new GoogleChrome();
-		Browser tabTwo=new FireFox();
-		Browser tabThree= new FireFox();
-		Browser tabFour= new GoogleChrome();
-		Browser tabFive= new GoogleChrome();
+		
+		Browser b = new Browser();//1
+		
+		Browser tabOne=new GoogleChrome();//2
+		Browser tabTwo=new FireFox();//3
+		Browser tabThree= new FireFox();//4
+		Browser tabFour= new GoogleChrome();//5
+		Browser tabFive= new GoogleChrome();//6
 		
 		System.out.println("------------------------------");
+		b.whoAmI();
 		tabOne.whoAmI();
 		tabTwo.whoAmI();
 		System.out.println("-----------------------------");
@@ -191,22 +246,31 @@ public class OopsConcept
 //			else if((allBrowsers[i].browserName).equalsIgnoreCase("FireFox"))
 //			{
 //				FireFoxInstances++;
-//			}
+//			}   
 //		}	
 		for(int i = 0; i < 5; i++) 
 		{
-			GoogleChromeInstances = (allBrowsers[i] instanceof GoogleChrome) ? ++GoogleChromeInstances : GoogleChromeInstances;
+			GoogleChromeInstances = (allBrowsers[i] instanceof GoogleChrome) ? ++GoogleChromeInstances : GoogleChromeInstances; //ternary operation
 			FireFoxInstances = (allBrowsers[i] instanceof FireFox) ? ++FireFoxInstances : FireFoxInstances;	
 		}
+		
+		//wrapper class exercise - 3//-----------------
+		Integer GoogleChromeInstancesObject = GoogleChromeInstances;
+		Integer fireFoxInstancesObject  = FireFoxInstances;
+		GoogleChromeInstances=GoogleChromeInstancesObject;
+		FireFoxInstances=fireFoxInstancesObject;
+		//---------------------
+		
 		System.out.println("-----------------------------");
-		System.out.println("No of Instances of GoogleChrome Browser: "+GoogleChromeInstances);
-		System.out.println("No of Instances of FireFox Browser: "+FireFoxInstances);
+		System.out.println("No of Instances of GoogleChrome Browser: "+GoogleChromeInstances +", "+ GoogleChromeInstancesObject);
+		System.out.println("No of Instances of FireFox Browser: "+FireFoxInstances+", "+fireFoxInstancesObject);
 		System.out.println("-----------------------------\n");
 		
 		//7
 		((MultipleAccountContainers) tabTwo).addContainer("facebookContainer"); 
 		((MultipleAccountContainers) tabTwo).addContainer("Mails"); 
-		((MultipleAccountContainers) tabTwo).addContainer("PrivateBrowsing"); 
+		((MultipleAccountContainers) tabTwo).addContainer("PrivateBrowsing");
+		
 		String[] containers=((MultipleAccountContainers) tabTwo).viewAllContainers(); 
 		for(int i=0;containers[i]!=null;i++)
 		{
@@ -225,4 +289,5 @@ public class OopsConcept
 	}
 }
  
+
 
