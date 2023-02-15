@@ -342,16 +342,16 @@ public class OopsConcept
 		((FireFox) tabTwo).addContainer("PrivateBrowsing");
 		((FireFox) tabTwo).addContainer("Images");
 		
-		String[] containers=((MultipleAccountContainers) tabTwo).viewAllContainers(); 
+		String[] containers=((FireFox) tabTwo).viewAllContainers(); 
 		for(int i=0;containers[i]!=null;i++)
 		{
 			System.out.print(containers[i]+"\n");
 		}
 		System.out.println("-----------------------------");
 		
-		((MultipleAccountContainers) tabTwo).leaveContainer("PrivateBrowsing"); 
+		((FireFox) tabTwo).leaveContainer("PrivateBrowsing"); 
 		
-		containers=((MultipleAccountContainers) tabTwo).viewAllContainers(); 
+		containers=((FireFox) tabTwo).viewAllContainers(); 
 		for(int i=0;containers[i]!=null;i++)
 		{
 			System.out.print(containers[i]+"\n");
