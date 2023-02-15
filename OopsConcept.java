@@ -61,15 +61,22 @@ class Browser
 	//Get History method for counting URLs Instances // EXERCISE-4
 	public void getHistoryCount(String[] visitedURLs)
 	{	
-		
-	
-	    ArrayList<String> visitedArrayList =new ArrayList<String>();
+		int count=0;
+	    ArrayList<String> visitedArrayList1 =new ArrayList<String>();
+	    ArrayList<String> visitedArrayList2 =new ArrayList<String>();
 	    for(String x:visitedURLs)
 	    {
-	    	visitedArrayList.add(x);
+	    	visitedArrayList1.add(x);
 	    }
-	    for (String x : visitedArrayList){
-	    	   System.out.println(x+" ##"+Collections.frequency(visitedArrayList,x));
+	    for(String x:visitedArrayList1)
+	    {
+	    	count=Collections.frequency(visitedArrayList1,x);
+	    	x=x.concat(" ##");
+	    	x=x+count;
+	    	visitedArrayList2.add(x);
+	    }
+	    for (String x : visitedArrayList2){
+	    	   System.out.println(x);
 	    	}
 	}
 	
@@ -206,19 +213,25 @@ class FireFox extends Browser implements MultipleAccountContainers
 	{
 		++this.containerArrayIndex;
 		this.containers[this.containerArrayIndex]=containerName;
-		
+
 	}
 
 	public void leaveContainer(String containerName) 
 	{
-		String[] duplicateContainerArray = new String[this.containers.length - 1];
-		int j=0;
-		for (String element:containers) {
-		    if (!containerName.equalsIgnoreCase(element)) {
-		        duplicateContainerArray[j++] = element;
-		    }
+		int index=0;
+		for(int i=0;i<=this.containerArrayIndex;i++)
+		{
+			if(this.containers[i].equalsIgnoreCase(containerName))
+			{
+				index=i;
+			}
 		}
-		containers=duplicateContainerArray;
+		for(int i=index;i<=this.containerArrayIndex;i++)
+		{
+			this.containers[i]=this.containers[++i];
+		}
+		this.containers[this.containerArrayIndex]=null;
+		--this.containerArrayIndex;
 	}
 	
 	public String[] viewAllContainers()
