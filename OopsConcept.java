@@ -2,6 +2,7 @@ package oops;
 
 import java.util.*;
 
+//Ex-2 ^7
 interface MultipleAccountContainers
 {
 	void addContainer(String containerName);
@@ -11,6 +12,14 @@ interface MultipleAccountContainers
 
 class Browser
 {	
+	
+//	class bookmarks
+//	{
+//	}
+//	static class history
+//	{	
+//	}
+	
 	static final int visitedURLsSize=20;
 	private String[] visitedURLs = new String[visitedURLsSize];           //Browser Specific
 	int visitedURLsIndex=0;
@@ -19,10 +28,12 @@ class Browser
 	private static String[] allURLsArray = new String[allURsArraySize];   //It stores All the URLs from All Browsers, Not Browser Specific
 	static int allURlsIndex=0;
 
-	public Browser() {
+	public Browser() 
+	{
 		System.out.println("Inside browser Constructor");
 	}
-	
+
+	//Exercise-1
 	public Browser(String[] url)
 	{
 		if(this.visitedURLsIndex>=visitedURLsSize &&  allURlsIndex>=allURsArraySize)
@@ -47,26 +58,19 @@ class Browser
 		getHistoryCount(this.visitedURLs);
 	}
 	
+	//Get History method for counting URLs Instances // EXERCISE-4
 	public void getHistoryCount(String[] visitedURLs)
 	{	
-		Map<String,Integer> mapping = new HashMap();
-	    for(String x: visitedURLs)
+		
+	
+	    ArrayList<String> visitedArrayList =new ArrayList<String>();
+	    for(String x:visitedURLs)
 	    {
-	        if(!mapping.containsKey(x))
-	        {
-	            mapping.put(x,1);
-	        }
-	        else
-	        {
-	            mapping.put(x, mapping.get(x)+1);
-	        }
+	    	visitedArrayList.add(x);
 	    }
-	    //System.out.println(mapping);
-	    for (String name: mapping.keySet()) {
-	        String key = name.toString();
-	        String value = mapping.get(name).toString();
-	        System.out.println(key + " ##" + value);
-	    }
+	    for (String x : visitedArrayList){
+	    	   System.out.println(x+" ##"+Collections.frequency(visitedArrayList,x));
+	    	}
 	}
 	
 	//Set All URLs method
@@ -82,12 +86,9 @@ class Browser
 	//Get All URLs method
 	public void getAllURLs()
 	{
-		String[] duplicateURLsArray = allURLsArray;
-		int duplicateURLsArrayIndex=allURlsIndex;
-		
-		for(int i=duplicateURLsArrayIndex-1;i>=0;i--)
+		for(int i=allURlsIndex-1;i>=0;i--)
 		{
-			System.out.println(duplicateURLsArray[i]);
+			System.out.println(allURLsArray[i]);
 		}
 		System.out.println("\n");
 		//getHistoryCount(allURLsArray);
@@ -119,6 +120,7 @@ class Browser
 		return updatedURLs;
 	}
 
+	/////////
 	
 	void whoAmI()
 	{
@@ -127,7 +129,7 @@ class Browser
 }
 
 
-
+//Exercise-2
 //GoogleChrome Class
 class GoogleChrome extends Browser
 {
@@ -137,7 +139,7 @@ class GoogleChrome extends Browser
 	public GoogleChrome() 
 	{
 		super();
-//		System.out.println("Inside GoogleChrome Constructor");
+		System.out.println("Inside GoogleChrome Constructor");
 	}
 	
 	public void whoAmI() 
@@ -152,16 +154,11 @@ class GoogleChrome extends Browser
 		this.isMicrophoneAccessible = isMicrophoneAccessible;
 	}
 	
-	public void setPermissions(boolean set) 
+	public void setPermissions(boolean givenPermission) 
 	{
-		this.isLocationAccessible = set;
-		this.isCameraAccessible = set;
-		this.isMicrophoneAccessible = set;
-	}
-	
-	public String getVersionNumber() 
-	{
-		return this.versionNumber;
+		this.isLocationAccessible = givenPermission;
+		this.isCameraAccessible = givenPermission;
+		this.isMicrophoneAccessible = givenPermission;
 	}
 	
 	public boolean getIsLocationAccessible() 
@@ -179,20 +176,25 @@ class GoogleChrome extends Browser
 		return this.isMicrophoneAccessible;
 	}
 	
+	public String getVersionNumber() 
+	{
+		return this.versionNumber;
+	}
+	
 }
 
 
 //FireFox class
 class FireFox extends Browser implements MultipleAccountContainers
 {
-	private int MaxContainerSize=10;
+	private int MaxContainerSize=20;
 	String[] containers=new String[MaxContainerSize];
-	private int containerArrayIndex=0;
+	private int containerArrayIndex=-1;
 	
 	public FireFox() 
 	{
 		super();
-//		System.out.println("Inside FireFox Constructor");
+		System.out.println("Inside FireFox Constructor");
 	}
 	
 	void whoAmI()
@@ -202,26 +204,27 @@ class FireFox extends Browser implements MultipleAccountContainers
 	
 	public void addContainer(String containerName) 
 	{
+		++this.containerArrayIndex;
 		this.containers[this.containerArrayIndex]=containerName;
-		this.containerArrayIndex++;
+		
 	}
 
 	public void leaveContainer(String containerName) 
 	{
-		for(int i=0;i<containerArrayIndex;i++)
-		{
-			if(this.containers[i].equalsIgnoreCase(containerName))
-					{
-						this.containers[i]=null;
-					}
+		String[] duplicateContainerArray = new String[this.containers.length - 1];
+		int j=0;
+		for (String element:containers) {
+		    if (!containerName.equalsIgnoreCase(element)) {
+		        duplicateContainerArray[j++] = element;
+		    }
 		}
+		containers=duplicateContainerArray;
 	}
 	
 	public String[] viewAllContainers()
 	{
 		return containers;
 	}
-	
 }
 
 
@@ -281,16 +284,17 @@ public class OopsConcept
 		
 		//4
 		((GoogleChrome) tabOne).setPermissions(true);
-		((GoogleChrome) tabOne).setPermissions(true, false, true);
-		System.out.println("\n-------------------\n");
-		System.out.println("Google Chrome details\n");
+		((GoogleChrome) tabOne).setPermissions(true, false, false);
+		
+		System.out.println("-----------------------------");
 		System.out.println("Location Access : " + ((GoogleChrome) tabOne).getIsLocationAccessible());
 		System.out.println("Camera Access : " + ((GoogleChrome) tabOne).getIsCameraAccessible());
 		System.out.println("Micophone Access : " + ((GoogleChrome) tabOne).getIsMicrophoneAccessible());
-		
+		System.out.println("-----------------------------");
 		//5
 		System.out.println("Version No : " + ((GoogleChrome) tabOne).getVersionNumber());
 		
+		System.out.println("-----------------------------");
 		//6
 		Browser[] allBrowsers = {tabOne,tabTwo,tabThree,tabFour,tabFive};
 			
@@ -300,6 +304,7 @@ public class OopsConcept
 			FireFoxInstances = (allBrowsers[i] instanceof FireFox) ? ++FireFoxInstances : FireFoxInstances;	
 		}
 		
+		
 		//wrapper class exercise - 3//-----------------
 		Integer GoogleChromeInstancesObject = GoogleChromeInstances;
 		Integer fireFoxInstancesObject  = FireFoxInstances;
@@ -307,33 +312,36 @@ public class OopsConcept
 		FireFoxInstances=fireFoxInstancesObject;
 		//---------------------
 		
+		
 		System.out.println("-----------------------------");
 		System.out.println("No of Instances of GoogleChrome Browser: "+GoogleChromeInstances +", "+ GoogleChromeInstancesObject);
 		System.out.println("No of Instances of FireFox Browser: "+FireFoxInstances+", "+fireFoxInstancesObject);
-		System.out.println("-----------------------------\n");
+		System.out.println("-----------------------------");
 		
 		//7
 		((MultipleAccountContainers) tabTwo).addContainer("facebookContainer"); 
 		((MultipleAccountContainers) tabTwo).addContainer("Mails"); 
 		((MultipleAccountContainers) tabTwo).addContainer("PrivateBrowsing");
+		((MultipleAccountContainers) tabTwo).addContainer("Images");
 		
 		String[] containers=((MultipleAccountContainers) tabTwo).viewAllContainers(); 
 		for(int i=0;containers[i]!=null;i++)
 		{
-			System.out.print(containers[i]+" ");
+			System.out.print(containers[i]+"\n");
 		}
-		System.out.println("\n\n-----------------------------");
+		System.out.println("-----------------------------");
+		
 		((MultipleAccountContainers) tabTwo).leaveContainer("PrivateBrowsing"); 
 		
 		containers=((MultipleAccountContainers) tabTwo).viewAllContainers(); 
-		System.out.println();
 		for(int i=0;containers[i]!=null;i++)
 		{
-			System.out.print(containers[i]+" ");
+			System.out.print(containers[i]+"\n");
 		} 
-		System.out.println("\n-----------------------------");
+		System.out.println("-----------------------------");
 	}
 }
  
+
 
 
