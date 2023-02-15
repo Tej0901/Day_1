@@ -55,7 +55,13 @@ class Browser
 	//Get URL method
 	public void getVisitedURLs()
 	{	
-		getHistoryCount(this.visitedURLs);
+		for(int i=this.visitedURLsIndex-1;i>=0;i--)
+		{
+			System.out.println(this.visitedURLs[i]);
+		}
+		System.out.println("\n");
+		
+		//getHistoryCount(this.visitedURLs);
 	}
 	
 	//Get History method for counting URLs Instances // EXERCISE-4
@@ -98,7 +104,6 @@ class Browser
 			System.out.println(allURLsArray[i]);
 		}
 		System.out.println("\n");
-		//getHistoryCount(allURLsArray);
 	}
 	
 	//add URl method
@@ -332,10 +337,10 @@ public class OopsConcept
 		System.out.println("-----------------------------");
 		
 		//7
-		((MultipleAccountContainers) tabTwo).addContainer("facebookContainer"); 
-		((MultipleAccountContainers) tabTwo).addContainer("Mails"); 
-		((MultipleAccountContainers) tabTwo).addContainer("PrivateBrowsing");
-		((MultipleAccountContainers) tabTwo).addContainer("Images");
+		((FireFox) tabTwo).addContainer("facebookContainer"); 
+		((FireFox) tabTwo).addContainer("Mails"); 
+		((FireFox) tabTwo).addContainer("PrivateBrowsing");
+		((FireFox) tabTwo).addContainer("Images");
 		
 		String[] containers=((MultipleAccountContainers) tabTwo).viewAllContainers(); 
 		for(int i=0;containers[i]!=null;i++)
