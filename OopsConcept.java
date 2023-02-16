@@ -1,7 +1,5 @@
 package oops;
 
-import java.util.*;
-
 //Ex-2 ^7
 interface MultipleAccountContainers
 {
@@ -21,7 +19,7 @@ class Browser
 //	}
 	
 	static final int visitedURLsSize=20;
-	private String[] visitedURLs = new String[visitedURLsSize];           //Browser Specific
+	String[] visitedURLs = new String[visitedURLsSize];           //Browser Specific
 	int visitedURLsIndex=0;
 	
 	static final int allURsArraySize=40;
@@ -36,7 +34,7 @@ class Browser
 	//Exercise-1
 	public Browser(String[] url)
 	{
-		if(this.visitedURLsIndex>=visitedURLsSize &&  allURlsIndex>=allURsArraySize)
+		if(allURlsIndex>=allURsArraySize)
 		{
 			//exception occurs!!!!
 			System.exit(0);
@@ -44,13 +42,54 @@ class Browser
 		this.setVisitedURLs(url);
 	}
 	
-	//set URL method
 	public void setVisitedURLs(String[] url)
 	{
-		this.visitedURLs=url;
-		this.visitedURLsIndex=this.visitedURLs.length;
+		for(String link:url)
+		{
+			this.visitedURLs[this.visitedURLsIndex]=link+" ## "+1;
+			this.visitedURLsIndex++;
+		}
 		this.setAllURLs(url);
 	}
+	
+	//set History for counting URLs Count // EXERCISE-4
+	public void setVisitedURLs(String url)
+	{	
+		int pageCount=1,position=0;
+		String[] urlPart;
+		boolean flag = false;
+		for(int i=0;i<this.visitedURLsIndex;i++)
+		{
+			urlPart=this.visitedURLs[i].split(" ## ");
+			if(url.equalsIgnoreCase(urlPart[0]))
+			{
+				pageCount=Integer.parseInt(urlPart[1])+1;
+				this.visitedURLs[position]=url+" ## "+pageCount;
+				flag=true;
+			}
+			position++;
+		}
+		if(!flag)
+		{
+			this.visitedURLs[this.visitedURLsIndex]=url+" ## "+pageCount;
+			this.visitedURLsIndex++;
+		}
+	}
+	
+	
+	//add URl method
+	public void addVisitedURLs(String url)
+	{
+		if(allURlsIndex>=allURsArraySize)
+		{
+			//exception occurs!!!!
+			System.exit(0);
+		}
+		this.setVisitedURLs(url);
+		allURLsArray[allURlsIndex]=url;
+		allURlsIndex++;
+	}
+	
 	
 	//Get URL method
 	public void getVisitedURLs()
@@ -60,31 +99,8 @@ class Browser
 			System.out.println(this.visitedURLs[i]);
 		}
 		System.out.println("\n");
-		
-		//getHistoryCount(this.visitedURLs);
 	}
 	
-	//Get History method for counting URLs Instances // EXERCISE-4
-	public void getHistoryCount(String[] visitedURLs)
-	{	
-		int count=0;
-	    ArrayList<String> visitedArrayList1 =new ArrayList<String>();
-	    ArrayList<String> visitedArrayList2 =new ArrayList<String>();
-	    for(String x:visitedURLs)
-	    {
-	    	visitedArrayList1.add(x);
-	    }
-	    for(String x:visitedArrayList1)
-	    {
-	    	count=Collections.frequency(visitedArrayList1,x);
-	    	x=x.concat(" ##");
-	    	x=x+count;
-	    	visitedArrayList2.add(x);
-	    }
-	    for (String x : visitedArrayList2){
-	    	   System.out.println(x);
-	    	}
-	}
 	
 	//Set All URLs method
 	public void setAllURLs(String[] url) 
@@ -104,32 +120,6 @@ class Browser
 			System.out.println(allURLsArray[i]);
 		}
 		System.out.println("\n");
-	}
-	
-	//add URl method
-	public void addVisitedURLs(String url)
-	{
-		if(this.visitedURLsIndex>=visitedURLsSize &&  allURlsIndex>=allURsArraySize)
-		{
-			//exception occurs!!!!
-			System.exit(0);
-		}
-		this.visitedURLs= addURL(visitedURLs,visitedURLsIndex,url);
-		this.visitedURLsIndex++;
-		allURLsArray[allURlsIndex]=url;
-		allURlsIndex++;
-	}
-	
-	//resizing Array method
-	public String[] addURL(String[] visitedURLs, int visitedURLsIndex, String url)
-	{
-		String[] updatedURLs=new String[visitedURLsIndex+1];
-		for(int i=0;i<visitedURLsIndex;i++)
-		{
-			updatedURLs[i]=visitedURLs[i];
-		}
-		updatedURLs[visitedURLsIndex]=url;
-		return updatedURLs;
 	}
 
 	/////////
