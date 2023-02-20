@@ -75,30 +75,35 @@ class BrowserHistory
 //		return history.get(currentUrlIndex);
 	}
 	
-	void backAndForwardExceptionHandling(int urlIndex,int steps,String mode)
+	void backAndForwardExceptionHandling(int currentUrlIndex,int steps,String mode)
 	{
 		try 
 		{
-			if(urlIndex>=0 && urlIndex<history.size())
+			if(currentUrlIndex>=0 && currentUrlIndex<history.size())
 			{
-				System.out.println("url we got after "+steps+mode+": "+history.get(urlIndex));
+				System.out.println("url we got after "+steps+" "+mode+": "+history.get(currentUrlIndex));
 			}
 			else 
 			{
-				//currentUrlIndex=urlIndex;
 				throw new NoHistoryFoundException();
 			}
 		}
 		catch (NoHistoryFoundException e) 
 		{
-			currentUrlIndex=urlIndex;
+			if(mode.equals("Forward"))
+			{
+				this.currentUrlIndex=currentUrlIndex-steps;
+			}
+			else 
+			{
+				this.currentUrlIndex=currentUrlIndex+steps;
+			}
 			System.out.println("No History Found "+e);
 		}
 	}
 	
 	void get(int position)
 	{
-		//System.out.println(this.history[position]);
 		try 
 		{
 			if(position>=0 && position< history.size())
