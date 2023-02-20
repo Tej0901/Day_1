@@ -1,7 +1,5 @@
 package exceptionHandling;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 class InvalidURLException extends Exception
@@ -22,20 +20,19 @@ class InvalidPositionException extends Exception
 
 class BrowserHistory
 {
-	//public ArrayList<String>history=new ArrayList<String>();
-	int MAX_SIZE=20;
-	int historyArrayIndex=-1;
-	public String[] history = new String[MAX_SIZE];
+	int currentUrlIndex=-1;
+	public ArrayList<String>history=new ArrayList<String>();
 	
 	public BrowserHistory(String homePage) 
 	{
+		
 		String url=homePage;
-		this.setHistoryUrlExceptionHandling(url);
+		setHistoryUrlExceptionHandling(url);
 	}
 	
 	void visit(String url)
 	{
-		this.setHistoryUrlExceptionHandling(url);
+		setHistoryUrlExceptionHandling(url);
 	}
 	
 	void setHistoryUrlExceptionHandling(String url)
@@ -44,9 +41,8 @@ class BrowserHistory
 		{
 			if(url.endsWith(".com") || url.endsWith(".in") || url.endsWith(".org"))
 			{
-				this.history[++this.historyArrayIndex]=url;
-				//this.historyArrayIndex++;
-				//history.add(url);
+				history.add(url);
+				++currentUrlIndex;
 			}
 			else 
 			{
@@ -59,28 +55,56 @@ class BrowserHistory
 		}
 	}
 	
-	String back(int steps)
+	void back(int steps) 
 	{
-		String url = null;
-		
-		return url;
+		for(int i=0;i<steps;i++)
+		{
+			--currentUrlIndex;
+		}
+		backAndForwardExceptionHandling(currentUrlIndex,steps,"Backward");
+		//return history.get(currentUrlIndex);
 	}
 	
-	String forward(int steps)
+	void forward(int steps) 
 	{
-		String url = null;
-		
-		return url;
+		for(int i=0;i<steps;i++)
+		{
+			++currentUrlIndex;
+		}
+		backAndForwardExceptionHandling(currentUrlIndex,steps,"Forward");
+//		return history.get(currentUrlIndex);
+	}
+	
+	void backAndForwardExceptionHandling(int urlIndex,int steps,String mode)
+	{
+		try 
+		{
+			if(urlIndex>=0 && urlIndex<history.size())
+			{
+				System.out.println("url we got after "+steps+mode+": "+history.get(urlIndex));
+			}
+			else 
+			{
+				//currentUrlIndex=urlIndex;
+				throw new NoHistoryFoundException();
+			}
+		}
+		catch (NoHistoryFoundException e) 
+		{
+			currentUrlIndex=urlIndex;
+			System.out.println("No History Found "+e);
+		}
 	}
 	
 	void get(int position)
 	{
+		//System.out.println(this.history[position]);
 		try 
 		{
-			if(position>=0 && position<=historyArrayIndex)
+			if(position>=0 && position< history.size())
 			{
-				System.out.println(this.history[position]);
 				//return history.get(position);
+				System.out.println(history.get(position-1));
 			}
 			else if(position<0)
 			{
@@ -99,18 +123,16 @@ class BrowserHistory
 		{
 			System.out.println("Provide only positive values "+e);
 		}
-		//return history[position];
-		//return history.get(position) ;
 	}
 	
 }
-
 
 
 public class Exercise6 
 {
 	public static void main(String[] args) throws IOException
 	{
+		int steps=0;
 		BrowserHistory tabOne = new BrowserHistory("www.google.com");
 		System.out.println("1. Visit\n2. Back\n3. Forward\n4. GetUrl\n5. Exit\n");
 		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
@@ -127,24 +149,27 @@ public class Exercise6
 		}
 		case "2":
 		{
-			
+			steps=Integer.parseInt(br.readLine());
+			tabOne.back(steps);
+//			System.out.println("url we got after "+steps+" forward: "+url);
 			break;
 		}
 		case "3":
 		{
-			
+			steps=Integer.parseInt(br.readLine());
+			tabOne.forward(steps);
+//			System.out.println("url we got after "+steps+" forward: "+url);
 			break;
 		}
 		case "4":
-		{
-			int position=br.read();
+		{   
+			int position=Integer.parseInt(br.readLine());
 			tabOne.get(position);
 			break;
 		}
 		default:
 			System.exit(0);
 		}
-		
 		}	
 	}
 }
