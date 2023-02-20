@@ -18,6 +18,8 @@ class InvalidPositionException extends Exception
 }
 
 
+
+
 class BrowserHistory
 {
 	int currentUrlIndex=-1;
@@ -106,7 +108,7 @@ class BrowserHistory
 	{
 		try 
 		{
-			if(position>=0 && position< history.size())
+			if(position>=0 && position<= history.size())
 			{
 				//return history.get(position);
 				System.out.println(history.get(position-1));
@@ -129,7 +131,6 @@ class BrowserHistory
 			System.out.println("Provide only positive values "+e);
 		}
 	}
-	
 }
 
 
