@@ -189,9 +189,5 @@ public class Exercise7_Part1 {
 		System.out.println("\nSize of Set is: "+size+"\n");
 		tabTwo.updateHistoryUrl("www.people.in", "www.pec.ptu.edu");
 		tabTwo.fetchHistory();
-		
-		
-		
-		
 	}
 }
