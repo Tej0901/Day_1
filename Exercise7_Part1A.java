@@ -1,9 +1,10 @@
 package collectionsPractice;
 import java.util.*;
+import java.util.PrimitiveIterator.OfDouble;
 
 class BrowserHistoryList
 {
-	ArrayList<String> history = new ArrayList<String>();
+	public ArrayList<String> history = new ArrayList<String>();
 	public BrowserHistoryList(String homePage) 
 	{
 		history.add(homePage);
@@ -17,9 +18,13 @@ class BrowserHistoryList
 	//1
 	void sortUrls()
 	{
-		ArrayList<String>urlHistoryArray=history;
+		ArrayList<String>urlHistoryArray=new ArrayList<String>(history);
 		Collections.sort(urlHistoryArray);
-		fetchHistory(urlHistoryArray);
+		for(String url:urlHistoryArray)
+		{
+			System.out.println(url);
+		}
+		System.out.println();
 	}
 	
 	//2
@@ -35,9 +40,9 @@ class BrowserHistoryList
 	}
 	
 	//3
-	void fetchHistory(ArrayList<String> urlHistoryArray)
+	void fetchHistory()
 	{
-		for(String url:urlHistoryArray)
+		for(String url:history)
 		{
 			System.out.println(url);
 		}
@@ -54,6 +59,7 @@ class BrowserHistoryList
 				System.out.println(url);
 			}
 		}
+		System.out.println();
 	}
 
 	//5
@@ -72,7 +78,7 @@ class BrowserHistoryList
 
 class BrowserHistorySet
 {
-	LinkedHashSet<String> historySet= new LinkedHashSet<>();
+	public LinkedHashSet<String> historySet= new LinkedHashSet<>();
 	public BrowserHistorySet(String homePage) 
 	{
 		historySet.add(homePage);
@@ -91,6 +97,7 @@ class BrowserHistorySet
 		{
 			System.out.println(url);
 		}
+		System.out.println();
 	}
 	
 	//2
@@ -106,13 +113,14 @@ class BrowserHistorySet
 	}
 	
 	//3
-	void fetchHistorySet()
+	void fetchHistory()
 	{
 		Iterator<String> itr = historySet.iterator();
 		while(itr.hasNext())
 		{
 			System.out.println(itr.next());
 		}
+		System.out.println();
 	}
 	
 	//4
@@ -160,6 +168,29 @@ public class Exercise7_Part1 {
 		tabTwo.visit("www.gmail.com");
 		
 		//operations---
+
+		tabOne.fetchHistory();
+		tabOne.sortUrls();
+		tabOne.fetchHistory();
+		tabOne.searchWithExtension(".com");
+		tabOne.deleteHistory("www.Google.com");
+		int size=tabOne.getHistorySize();
+		System.out.println("\nSize of List is: "+size+"\n");
+		tabOne.updateHistoryUrl(0, "www.pec.ptu.edu");
+		tabOne.fetchHistory();
+		
+		
+		tabTwo.fetchHistory();
+		tabTwo.sortUrls();
+		tabTwo.fetchHistory();
+		tabTwo.searchWithExtension(".in");
+		tabTwo.deleteHistory("www.insta.com");
+		size=tabTwo.getHistorySize();
+		System.out.println("\nSize of Set is: "+size+"\n");
+		tabTwo.updateHistoryUrl("www.people.in", "www.pec.ptu.edu");
+		tabTwo.fetchHistory();
+		
+		
 		
 		
 	}
