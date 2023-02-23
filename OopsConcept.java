@@ -1,4 +1,5 @@
 package oops;
+import java.util.*;
 
 //Ex-2 ^7
 interface MultipleAccountContainers
@@ -10,14 +11,46 @@ interface MultipleAccountContainers
 
 class Browser
 {	
+	//Exercise-5
 	
-//	class bookmarks
-//	{
-//	}
-//	static class history
-//	{	
-//	}
+	//Member Inner Class
+	class Bookmarks
+	{
+		ArrayList<String> bookmarksArrayList = new ArrayList<String>();
+		
+		public void setBookmarks(String bookmark) 
+		{
+			bookmarksArrayList.add(bookmark);
+		}
+		
+		public void getBookmarks() 
+		{
+			System.out.println("Stored Bookmarks are: ");
+			for(String bookmark:bookmarksArrayList)
+			{
+				System.out.println(bookmark);
+			}
+			System.out.println();
+		}
+	}
 	
+	// Anonymous Inner Class
+	abstract class Shortcuts
+	{
+		abstract void show();
+	}
+		
+		
+	//Static Inner Class
+	static class History
+	{	
+		public void show() 
+		{
+			System.out.println("Calling Static History Class");
+		}
+	}
+
+
 	static final int visitedURLsSize=20;
 	String[] visitedURLs = new String[visitedURLsSize];           //Browser Specific
 	int visitedURLsIndex=0;
@@ -75,7 +108,6 @@ class Browser
 			this.visitedURLsIndex++;
 		}
 	}
-	
 	
 	//add URl method
 	public void addVisitedURLs(String url)
@@ -270,12 +302,9 @@ public class OopsConcept
 		System.out.println("-----------------------------");
 		
 		
-		
 		//exercise-2
-		int GoogleChromeInstances=0;
-		int FireFoxInstances=0;
 		
-		Browser b = new Browser();//1
+		Browser browser = new Browser();//1
 		
 		Browser tabOne=new GoogleChrome();//2
 		Browser tabTwo=new FireFox();//3
@@ -285,7 +314,7 @@ public class OopsConcept
 		
 		//3
 		System.out.println("------------------------------");
-		b.whoAmI();
+		browser.whoAmI();
 		tabOne.whoAmI();
 		tabTwo.whoAmI();
 		System.out.println("-----------------------------");
@@ -303,22 +332,25 @@ public class OopsConcept
 		System.out.println("Version No : " + ((GoogleChrome) tabOne).getVersionNumber());
 		
 		System.out.println("-----------------------------");
+		
 		//6
 		Browser[] allBrowsers = {tabOne,tabTwo,tabThree,tabFour,tabFive};
-			
+		
+		int GoogleChromeInstances=0;
+		int FireFoxInstances=0;
+		
 		for(int i = 0; i < 5; i++) 
 		{
 			GoogleChromeInstances = (allBrowsers[i] instanceof GoogleChrome) ? ++GoogleChromeInstances : GoogleChromeInstances; //ternary operation
 			FireFoxInstances = (allBrowsers[i] instanceof FireFox) ? ++FireFoxInstances : FireFoxInstances;	
 		}
 		
-		
 		//wrapper class exercise - 3//-----------------
 		Integer GoogleChromeInstancesObject = GoogleChromeInstances;
 		Integer fireFoxInstancesObject  = FireFoxInstances;
 		GoogleChromeInstances=GoogleChromeInstancesObject;
 		FireFoxInstances=fireFoxInstancesObject;
-		//---------------------
+		//----------------------------------
 		
 		
 		System.out.println("-----------------------------");
@@ -347,6 +379,30 @@ public class OopsConcept
 			System.out.print(containers[i]+"\n");
 		} 
 		System.out.println("-----------------------------");
+		
+		
+		//Exercise-5 Main Functon
+		Browser.Bookmarks bookmarks = browser.new Bookmarks();
+		bookmarks.setBookmarks("www.pec.edu");
+		bookmarks.setBookmarks("www.javatpoint.com");
+		bookmarks.setBookmarks("www.Gmail.com");
+		System.out.println("\n-------------------");
+		bookmarks.getBookmarks();
+		System.out.println("-------------------");
+	
+		Browser.History history = new Browser.History();
+		history.show();
+		System.out.println("---------------------");
+		
+		Browser.Shortcuts shortcutsAvailable = browser.new Shortcuts() 
+		{
+			void show() 
+			{
+				System.out.println("Calling Anonymous Shortcuts Class");
+				System.out.println("------------------------");
+			}
+		};
+		shortcutsAvailable.show();
 	}
 }
  
