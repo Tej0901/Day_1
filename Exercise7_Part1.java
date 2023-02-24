@@ -19,6 +19,7 @@ class BrowserHistoryList
 	{
 		ArrayList<String>urlHistoryArray=new ArrayList<String>(history);
 		Collections.sort(urlHistoryArray);
+		System.out.println("Sorted history List: ");
 		for(String url:urlHistoryArray)
 		{
 			System.out.println(url);
@@ -29,11 +30,13 @@ class BrowserHistoryList
 	//2
 	void deleteHistory(int index)
 	{
+		System.out.println("After deletion of "+history.get(index)+" :");
 		history.remove(index);
 		System.out.println(history);
 	}
 	void deleteHistory(String url)
 	{
+		System.out.println("After deletion of "+url+" :");
 		history.remove(url);
 		System.out.println(history);
 	}
@@ -41,6 +44,7 @@ class BrowserHistoryList
 	//3
 	void fetchHistory()
 	{
+		System.out.println("Stored urls are: ");
 		for(String url:history)
 		{
 			System.out.println(url);
@@ -51,6 +55,7 @@ class BrowserHistoryList
 	//4
 	void searchWithExtension(String extension)
 	{
+		System.out.println("All urls with extension : "+extension+" are: ");
 		for(String url:history)
 		{
 			if(url.endsWith(extension))
@@ -91,22 +96,26 @@ class BrowserHistorySet
 	//1
 	void sortUrls()
 	{
-		TreeSet<String>urlTreeHashSet=new TreeSet<String>(historySet);
-		for(String url:urlTreeHashSet)
+		TreeSet<String>urlTreeSet=new TreeSet<String>(historySet);
+		System.out.println("Sorted url Set is: ");
+		for(String url:urlTreeSet)
 		{
 			System.out.println(url);
 		}
 		System.out.println();
 	}
 	
+//	void deleteHistory(int index)
+//	{
+//		System.out.println("After deletion of "+historySet.get(index)+" :");
+//		historySet.remove(index);
+//		System.out.println(historySet);
+//	}
+	
 	//2
-	void deleteHistory(int index)
-	{
-		historySet.remove(index);
-		System.out.println(historySet);
-	}
 	void deleteHistory(String url)
 	{
+		System.out.println("After deletion of "+url+" :");
 		historySet.remove(url);
 		System.out.println(historySet);
 	}
@@ -115,6 +124,7 @@ class BrowserHistorySet
 	void fetchHistory()
 	{
 		Iterator<String> itr = historySet.iterator();
+		System.out.println("Stored URLs set is: ");
 		while(itr.hasNext())
 		{
 			System.out.println(itr.next());
@@ -125,6 +135,7 @@ class BrowserHistorySet
 	//4
 	void searchWithExtension(String extension)
 	{
+		System.out.println("Urls with extension :"+extension+" : ");
 		for(String url:historySet)
 		{
 			if(url.endsWith(extension))
