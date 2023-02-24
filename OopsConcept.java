@@ -44,9 +44,21 @@ class Browser
 	//Static Inner Class
 	static class History
 	{	
-		public void show() 
+		ArrayList<String> historyArrayList = new ArrayList<String>();
+		
+		public void setHistory(String history) 
 		{
-			System.out.println("Calling Static History Class");
+			historyArrayList.add(history);
+		}
+		
+		public void getHistory() 
+		{
+			System.out.println("Stored URLs are: ");
+			for(String url:historyArrayList)
+			{
+				System.out.println(url);
+			}
+			System.out.println();
 		}
 	}
 
@@ -388,11 +400,7 @@ public class OopsConcept
 		bookmarks.setBookmarks("www.Gmail.com");
 		System.out.println("\n-------------------");
 		bookmarks.getBookmarks();
-		System.out.println("-------------------");
-	
-		Browser.History history = new Browser.History();
-		history.show();
-		System.out.println("---------------------");
+		System.out.println("--------------------");
 		
 		Browser.Shortcuts shortcutsAvailable = browser.new Shortcuts() 
 		{
@@ -403,6 +411,13 @@ public class OopsConcept
 			}
 		};
 		shortcutsAvailable.show();
+		
+		Browser.History history = new Browser.History();
+		history.setHistory("www.google.com");
+		history.setHistory("www.zoho.com");
+		System.out.println("--------------------");
+		history.getHistory();
+		System.out.println("--------------------");
 	}
 }
  
