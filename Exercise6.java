@@ -4,7 +4,9 @@ import java.util.*;
 
 class InvalidURLException extends Exception
 {
+	
 	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 }
 
 class NoHistoryFoundException extends Exception
@@ -19,7 +21,6 @@ class InvalidPositionException extends Exception
 
 
 
-
 class BrowserHistory
 {
 	int currentUrlIndex=-1;
@@ -27,7 +28,6 @@ class BrowserHistory
 	
 	public BrowserHistory(String homePage) 
 	{
-		
 		String url=homePage;
 		setHistoryUrlExceptionHandling(url);
 	}
@@ -104,6 +104,7 @@ class BrowserHistory
 		}
 	}
 	
+	
 	void get(int position)
 	{
 		try 
@@ -119,16 +120,47 @@ class BrowserHistory
 			}
 			else
 			{
-				throw new ArrayIndexOutOfBoundsException();
+				System.out.println(history.get(position-1));
 			}
+			
 		}
-		catch (ArrayIndexOutOfBoundsException e)
+		catch (IndexOutOfBoundsException e)
 		{
 			System.out.println("Invalid Position "+e);
 		}
+		
 		catch (InvalidPositionException e) 
 		{
 			System.out.println("Provide only positive values "+e);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		finally 
+		{
+			System.out.println("Inside Finally Block");
+		}
+	}
+	
+	void sortUrls()
+	{
+		Collections.sort(history);
+		fetchHistory();
+	}
+	
+	String deleteHistory(int index)
+	{
+		String url=history.get(index);
+		history.remove(index);
+		return url;
+	}
+	
+	void fetchHistory()
+	{
+		for(String url:history)
+		{
+			System.out.println(url);
 		}
 	}
 }
@@ -140,7 +172,7 @@ public class Exercise6
 	{
 		int steps=0;
 		BrowserHistory tabOne = new BrowserHistory("www.google.com");
-		System.out.println("1. Visit\n2. Back\n3. Forward\n4. GetUrl\n5. Exit\n");
+		System.out.println("1. Visit\n2. Back\n3. Forward\n4. GetUrl\n4. Sort URLs\n5. Exit\n");
 		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
 		while(true) 
 		{
@@ -172,6 +204,11 @@ public class Exercise6
 			int position=Integer.parseInt(br.readLine());
 			tabOne.get(position);
 			break;
+		}
+		case "5":
+		{
+			tabOne.sortUrls();
+			
 		}
 		default:
 			System.exit(0);
