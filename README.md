@@ -14,3 +14,8 @@ all of these files are my practice java problems...
 
 [6] Exercise7_Part2.java  //contains exercise-7(part-2) problem
 
+[7] Exercise8.java   //contains exercise-8(File Handling) problem
+
+[8] Exercise9.java   //contains exercise-9(Multi Threading) problem
+
+[9] End Of Java Course....
