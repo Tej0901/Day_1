@@ -1,32 +1,45 @@
 package multithreading;
 import java.util.*;
 
-
-class Browser
-{
-	public ArrayList<String>historyArrayList=new ArrayList<String>();
-	public Browser(String HomePage) 
-	{
-		historyArrayList.add(HomePage);
-	}
-	
-	void addHistoryUrl(String url)
-	{
-		
-	}
-	
-	void deleteHistoryUrl()
-	{
-		
-	}
-}
-
-
-public class Exercise9 
+public class Exercise9  
 {
 	public static void main(String[] args)
 	{
-		
+		ArrayList<String> historyArrayList=new ArrayList<String>();
+
+		// Thread created for read operation
+		Thread readHistory = new Thread(new Runnable() 
+		{
+			public void run()
+			{
+				synchronized (historyArrayList)
+				{
+					Scanner sc = new Scanner(System.in);
+					System.out.println("Enter the element : ");
+					historyArrayList.add(sc.nextLine());
+					System.out.println("Url Written Successfully");
+				}
+			}
+		});
+
+		//Thread Created for Deletion operation
+		Thread deleteHistory = new Thread(new Runnable() 
+		{
+			public void run()
+			{
+				synchronized (historyArrayList)
+				{
+					historyArrayList.remove(historyArrayList.size()-1);
+					System.out.println("Last Url Deleted successfully");
+				}
+			}
+		});
+
+		// Read thread is started
+		readHistory.start();
+
+		// Deletion thread is started
+		deleteHistory.start();
 	}
 
 }
