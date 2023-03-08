@@ -7,14 +7,29 @@ class Hacker
 {
 	ArrayList<String>historyReceived=new ArrayList<String>();
 	
-	void getHistoryFromBrowser(Browser tab) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	@SuppressWarnings("unchecked")
+	void getHistoryFromBrowser(Browser tab) //throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
-		Method getMethod = Browser.class.getDeclaredMethod("getHistory",null);
-		getMethod.setAccessible(true);
-		historyReceived= (ArrayList<String>) getMethod.invoke(tab);
+		Method getMethod = null;
+		try 
+		{
+			getMethod = Browser.class.getDeclaredMethod("getHistory");
+			getMethod.setAccessible(true);
+			historyReceived= (ArrayList<String>) getMethod.invoke(tab);
+		} 
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
+		{
+			System.out.println(e.getMessage());
+		}
+		catch (Exception e) 
+		{
+			System.out.println(e.getMessage());
+		}
+		
 //		historyReceived=tab.getHistory();
 		writeHistoryToFile(historyReceived);	
 	}
+	
 	
 	void writeHistoryToFile(ArrayList<String> urls)
 	{
@@ -36,12 +51,12 @@ class Hacker
 	    }
 	    catch (IOException e) 
 		{
-	        System.out.println("An I/O error has occurred.");
+	        System.out.println("An I/O error has occurred. "+ e );
 	       
 	    }
 		catch(Exception e)
 		{
-			System.out.println(e);
+			System.out.println("error occureed!!! "+e);
 		}
 	}
 	
@@ -61,38 +76,58 @@ class Hacker
 		    } 
 		catch (FileNotFoundException e) 
 		{
-		      System.out.println("An error occurred! File Not Found!!!"+e);  
+		      System.out.println("An error occurred! File Not Found!!! "+e);  
 		}
 		catch (Exception e)
 		{
-			System.out.println(e);
+			System.out.println(e.getMessage());
 		}
 	}
 	
-	void modifyHistoryByAddingNewUrlsInFile(String newUrl,Browser tab) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+	void modifyHistoryByAddingNewUrlsInFile(String newUrl,Browser tab) //throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
 	{
 		try (FileWriter fWriter = new FileWriter("HistoryFile.txt", true);
                 PrintWriter pWriter = new PrintWriter(fWriter);) 
 		{
             pWriter.println(newUrl);
             System.out.println(newUrl+" : added successfully to file");
-            writeBackModifiedUrlsToBrowserClass(newUrl,tab);
+            try 
+            {
+				writeBackModifiedUrlsToBrowserClass(newUrl,tab);
+			} 
+            catch (SecurityException | IllegalArgumentException e) 
+            {
+				System.out.println("error occurred!!! "+e.getMessage());
+			}
         } 
 		catch (IOException e) 
 		{
 			System.out.println("An Error Occurred!!");
             e.printStackTrace();
         }
+		catch (Exception e) {
+			System.out.println("error occureed!!! "+e);
+		}
 	}
 	
-	void writeBackModifiedUrlsToBrowserClass(String newUrl,Browser tab) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	void writeBackModifiedUrlsToBrowserClass(String newUrl,Browser tab) //throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
-		Method method = Browser.class.getDeclaredMethod("setHistory",String.class);
-		method.setAccessible(true);
-		method.invoke(tab, newUrl);
+		Method setMethod;
+		try {
+			setMethod = Browser.class.getDeclaredMethod("setHistory",String.class);
+			setMethod.setAccessible(true);
+			setMethod.invoke(tab, newUrl);
+		} 
+		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
+		{
+			System.out.println(e.getMessage());
+		}
+		catch (Exception e)
+		{
+			 System.out.println("error occureed!!! " +e);
+		}
 //		tab.setHistory(newUrl);
 	}
-
 }
 
 
@@ -133,7 +168,7 @@ public class Exercise8
 		{
 			System.out.println("\n1. Add url to browser\n2. Read the Urls from browser\n"
 					+ "3. Get Urls And Write to History File\n4. Read the History File"
-					+ "\n5. Modify the History Filen\n6. Exit");
+					+ "\n5. Modify the History File\n6. Exit");
 			String choice=reader.nextLine();
 			switch (Integer.parseInt(choice)) 
 			{
@@ -169,7 +204,7 @@ public class Exercise8
 				}
 				case 6:
 				{
-					System.out.println("Exiting from program  !!!!");
+					System.out.println("Exiting from the program  !!!!");
 					System.exit(0);
 					break;
 				}
