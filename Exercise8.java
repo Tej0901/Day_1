@@ -8,14 +8,14 @@ class Hacker
 	ArrayList<String>historyReceived=new ArrayList<String>();
 	
 	@SuppressWarnings("unchecked")
-	void getHistoryFromBrowser(Browser tab) //throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	void getHistoryFromBrowser(Browser tabOne) //throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
-		Method getMethod = null;
+		Method getMethod;
 		try 
 		{
-			getMethod = Browser.class.getDeclaredMethod("getHistory");
+			getMethod = tabOne.getClass().getDeclaredMethod("getHistory");
 			getMethod.setAccessible(true);
-			historyReceived= (ArrayList<String>) getMethod.invoke(tab);
+			historyReceived= (ArrayList<String>) getMethod.invoke(tabOne);
 		} 
 		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
 		{
@@ -84,7 +84,7 @@ class Hacker
 		}
 	}
 	
-	void modifyHistoryByAddingNewUrlsInFile(String newUrl,Browser tab) //throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+	void modifyHistoryByAddingNewUrlsInFile(String newUrl,Browser tabOne) //throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
 	{
 		try (FileWriter fWriter = new FileWriter("HistoryFile.txt", true);
                 PrintWriter pWriter = new PrintWriter(fWriter);) 
@@ -93,7 +93,7 @@ class Hacker
             System.out.println(newUrl+" : added successfully to file");
             try 
             {
-				writeBackModifiedUrlsToBrowserClass(newUrl,tab);
+				writeBackModifiedUrlsToBrowserClass(newUrl,tabOne);
 			} 
             catch (SecurityException | IllegalArgumentException e) 
             {
@@ -110,13 +110,14 @@ class Hacker
 		}
 	}
 	
-	void writeBackModifiedUrlsToBrowserClass(String newUrl,Browser tab) //throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	void writeBackModifiedUrlsToBrowserClass(String newUrl,Browser tabOne) //throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		Method setMethod;
 		try {
+//			Class<?> String = null;
 			setMethod = Browser.class.getDeclaredMethod("setHistory",String.class);
 			setMethod.setAccessible(true);
-			setMethod.invoke(tab, newUrl);
+			setMethod.invoke(tabOne, newUrl);
 		} 
 		catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) 
 		{
@@ -135,11 +136,13 @@ class Browser
 {
 	ArrayList<String> historyArrayList=new ArrayList<String>();
 	//use reflection to access if it is private????
+	@SuppressWarnings("unused")
 	private void setHistory(String history) 
 	{
 		historyArrayList.add(history);
 	}
 	
+	@SuppressWarnings("unused")
 	private ArrayList<String> getHistory() 
 	{
 		return historyArrayList;
@@ -205,10 +208,12 @@ public class Exercise8
 				case 6:
 				{
 					System.out.println("Exiting from the program  !!!!");
+					reader.close();
 					System.exit(0);
 					break;
 				}
 			}
 		}
+		
 	}
 }
