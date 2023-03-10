@@ -25,7 +25,7 @@ public class Exercise9
 				}
 			}
 		});
-	
+		
 		//Thread Created for Deletion operation
 		Thread deleteHistory = new Thread(new Runnable() 
 		{
@@ -46,14 +46,18 @@ public class Exercise9
 				}
 			}
 		});
+//		readHistory.setPriority(Thread.MAX_PRIORITY);
+//		deleteHistory.setPriority(Thread.MIN_PRIORITY);
 		
-		deleteHistory.setPriority(Thread.MAX_PRIORITY);
-		readHistory.setPriority(Thread.MIN_PRIORITY);
 		// Read thread is started
 		readHistory.start();
-				
 		// Deletion thread is started
 		deleteHistory.start();
+		
+//		deleteHistory.interrupted();
+//		boolean flag=deleteHistory.isAlive();
+//		System.out.println(flag);
+		
 	}
 	
 }
