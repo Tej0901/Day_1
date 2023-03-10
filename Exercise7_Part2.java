@@ -46,8 +46,15 @@ class BrowserHistoryMap
 	
 	void deleteHistoryWithParticularExtension(String extension)
 	{
-		historyMap.remove(extension);
-		System.out.println(historyMap);
+		try 
+		{
+			historyMap.remove(extension);
+			System.out.println(historyMap);
+		} 
+		catch (Exception e) 
+		{
+			System.out.println("Extension Key Not Found to Delete values!!!"+e);
+		}
 	}
 	
 	void getSizeWithParticularExtension(String extension)
@@ -91,7 +98,7 @@ public class Exercise7_Part2
 		tabThree.visit("www.gmail.com");
 		
 		tabThree.fetchHistory("com");
-		tabThree.deleteHistoryWithParticularExtension("com");
+		tabThree.deleteHistoryWithParticularExtension("tej");
 		tabThree.getSizeWithParticularExtension("in");
 		tabThree.searchUrlWithParticularWord("in");
 		
