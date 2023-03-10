@@ -1,5 +1,9 @@
 package collectionsPractice;
 import java.util.*;
+//import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+
 
 class BrowserHistoryList
 {
@@ -30,15 +34,29 @@ class BrowserHistoryList
 	//2
 	void deleteHistory(int index)
 	{
-		System.out.println("After deletion of "+history.get(index)+" :");
-		history.remove(index);
-		System.out.println(history);
+		try 
+		{
+			System.out.println("After deletion of "+history.get(index)+" :");
+			history.remove(index);
+			System.out.println(history);
+		} 
+		catch (Exception e) 
+		{
+			System.out.println("Invalid Index!!"+e+"\n");
+		}
+		
 	}
 	void deleteHistory(String url)
 	{
+		if(history.contains(url)) {
 		System.out.println("After deletion of "+url+" :");
 		history.remove(url);
 		System.out.println(history);
+		}
+		else
+		{
+			System.out.println("URL Not Found!!!");
+		}
 	}
 	
 	//3
@@ -55,13 +73,19 @@ class BrowserHistoryList
 	//4
 	void searchWithExtension(String extension)
 	{
+		boolean flag=false;
 		System.out.println("Urls List with extension : "+extension+" : ");
 		for(String url:history)
 		{
 			if(url.endsWith(extension))
 			{
 				System.out.println(url);
+				flag=true;
 			}
+		}
+		if(!flag)
+		{
+			System.out.println("No Url Found with the given Extension !!!");
 		}
 		System.out.println();
 	}
@@ -77,8 +101,8 @@ class BrowserHistoryList
 	{
 		history.set(index, updatedUrl);
 	}
-	
 }
+
 
 class BrowserHistorySet
 {
@@ -96,23 +120,50 @@ class BrowserHistorySet
 	//1
 	void sortUrls()
 	{
-		TreeSet<String>urlTreeSet=new TreeSet<String>(historySet);
+ 
+//		Set<String>sortedUrls=new TreeSet<String>(historySet);     //O(n*logn)
+		Stream<String> sortedUrls = historySet.stream().sorted();  //O(n*logn)
 		System.out.println("Sorted url Set is: ");
-		for(String url:urlTreeSet)
-		{
-			System.out.println(url);
-		}
+		sortedUrls.forEach(System.out::println);
+//		System.out.println(sortedUrls);
+//		for(String url:sortedUrls)
+//		{
+//			System.out.println(url);
+//		}
 		System.out.println();
 	}
 	
 	//2
-	void deleteHistory(String url)
+	void deleteHistory(int index)
 	{
-		System.out.println("After deletion of "+url+" :");
-		historySet.remove(url);
-		System.out.println(historySet);
+		try 
+		{
+			ArrayList<String> list = new ArrayList<String>(historySet);
+			String url=list.get(index);
+			historySet.remove(url);
+			System.out.println("After deletion of "+url+" :");
+			System.out.println(historySet);
+		} 
+		catch (Exception e) 
+		{
+			System.out.println("Invalid Index Number!!! "+e);
+		}
 	}
 	
+	void deleteHistory(String url)
+	{
+		if(historySet.contains(url))
+		{
+			System.out.println("After deletion of "+url+" :");
+			historySet.remove(url);
+			System.out.println(historySet);
+		}
+		else 
+		{
+			System.out.println("URL Not Found!!");
+		}
+	}
+
 	//3
 	void fetchHistory()
 	{
@@ -128,13 +179,19 @@ class BrowserHistorySet
 	//4
 	void searchWithExtension(String extension)
 	{
+		boolean flag=false;
 		System.out.println("Urls Set with extension : "+extension+" : ");
 		for(String url:historySet)
 		{
 			if(url.endsWith(extension))
 			{
 				System.out.println(url);
+				flag=true;
 			}
+		}
+		if(!flag)
+		{
+			System.out.println("No url exist with given Extension!!!");
 		}
 		System.out.println();
 	}
@@ -146,15 +203,16 @@ class BrowserHistorySet
 	}
 	
 	//6
-	void updateHistoryUrl(String previousUrl,String updatedUrl)
+	void updateHistoryUrl(String oldUrl,String updatedUrl)
 	{
-		if(!historySet.add(previousUrl))
+		if(!historySet.add(oldUrl))
 		{
-			historySet.remove(previousUrl);
+			historySet.remove(oldUrl);
 			historySet.add(updatedUrl);
 		}
 	}
 }
+
 
 public class Exercise7_Part1 {
 	public static void main(String[] args)
@@ -176,7 +234,8 @@ public class Exercise7_Part1 {
 		tabOne.sortUrls();
 		tabOne.fetchHistory();
 		tabOne.searchWithExtension(".com");
-		tabOne.deleteHistory("www.Google.com");
+		tabOne.deleteHistory(-1);
+		tabOne.deleteHistory("www.Google.comm");
 		int size=tabOne.getHistorySize();
 		System.out.println("\nSize of List is: "+size+"\n");
 		tabOne.updateHistoryUrl(0, "www.pec.ptu.edu");
